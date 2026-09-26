@@ -12,10 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('nip', 20)->unique();
             $table->string('nama');
-            $table->string('gol_pangkat_cpns', 20);        
+            $table->string('gol_pangkat_cpns', 50)->nullable();
             $table->string('jabatan');
-            $table->string('gol_pangkat_terakhir', 20);
-            $table->date('tmt_pangkat_terakhir');          
+            $table->string('gol_pangkat_terakhir', 50);
+            $table->date('tmt_pangkat_terakhir')->nullable();
             $table->date('tmt_cpns')->nullable();        
             $table->date('kgb')->nullable();             
             $table->date('kgb_berikutnya')->nullable();    
@@ -36,8 +36,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
-    
 
     public function down(): void
     {
