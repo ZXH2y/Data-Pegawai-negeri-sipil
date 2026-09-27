@@ -2,27 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PegawaiDetailExport;
+use App\Exports\PegawaiExport;
 use App\Http\Requests\PegawaiRequest;
 use App\Models\Pegawai;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PegawaiController extends Controller
 {
-    /** Key query string yang dipakai bersama oleh index & export PDF. */
+    /** Key query string yang dipakai bersama oleh index & export Excel. */
     private const FILTER_KEYS = ['q', 'golongan', 'mode', 'kgb'];
 
     public function index(Request $request)
     {
         $filter = $request->only(self::FILTER_KEYS);
 
-        $pegawais = Pegawai::query()
-            ->filter($filter)
+        $pegawais = $this->queryPegawai($filter)
             ->orderBy('nama')
             ->paginate(15)
             ->withQueryString();
 
-        return view('pegawai.index', compact('pegawais', 'filter'));
+        // Angka di tab status KGB: dihitung dengan filter lain yang sedang aktif (tanpa filter KGB).
+        $filterTanpaKgb = Arr::except($filter, 'kgb');
+        $jumlahStatus = ['semua' => $this->queryPegawai($filterTanpaKgb)->count()];
+        foreach (['terlewat', 'bulan_ini', '3_bulan'] as $status) {
+            $jumlahStatus[$status] = $this->queryPegawai([...$filterTanpaKgb, 'kgb' => $status])->count();
+        }
+
+        $totalPegawai = Pegawai::count();
+
+        return view('pegawai.index', compact('pegawais', 'filter', 'jumlahStatus', 'totalPegawai'));
     }
 
     public function create()
@@ -71,34 +83,45 @@ class PegawaiController extends Controller
             ->with('success', "Data pegawai {$nama} berhasil dihapus.");
     }
 
-    /** Export daftar pegawai (mengikuti filter yang sedang aktif di halaman index). */
-    public function exportPdf(Request $request)
+    /** Export daftar pegawai ke Excel (mengikuti filter yang sedang aktif di halaman index). */
+    public function exportExcel(Request $request)
     {
         $filter = $request->only(self::FILTER_KEYS);
 
-        $pegawais = Pegawai::query()->filter($filter)->orderBy('nama')->get();
+        $pegawais = $this->queryPegawai($filter)->orderBy('nama')->get();
 
-        $pdf = Pdf::loadView('pegawai.pdf.daftar', [
-            'pegawais' => $pegawais,
-            'filter' => $filter,
-            'dicetak' => now(),
-        ])->setPaper('a4', 'landscape');
+        $namaFile = 'data-pegawai-'.now()->format('Ymd-His').'.xlsx';
 
-        $namaFile = 'data-pegawai-'.now()->format('Ymd-His').'.pdf';
-
-        // ?preview=1 -> tampil di tab browser; selain itu langsung unduh.
-        return $request->boolean('preview') ? $pdf->stream($namaFile) : $pdf->download($namaFile);
+        return Excel::download(new PegawaiExport($pegawais, $filter, now()), $namaFile);
     }
 
-    /** Export detail satu pegawai beserta riwayat KGB-nya. */
-    public function exportDetailPdf(Pegawai $pegawai)
+    /** Export detail satu pegawai beserta riwayat KGB-nya ke Excel. */
+    public function exportDetailExcel(Pegawai $pegawai)
     {
         $pegawai->load('kgbHistories');
 
-        return Pdf::loadView('pegawai.pdf.detail', [
-            'pegawai' => $pegawai,
-            'dicetak' => now(),
-        ])->setPaper('a4', 'portrait')
-            ->stream('pegawai-'.$pegawai->nip.'.pdf');
+        return Excel::download(
+            new PegawaiDetailExport($pegawai, now()),
+            'pegawai-'.$pegawai->nip.'.xlsx'
+        );
+    }
+
+    /**
+     * Query pegawai sesuai filter.
+     *
+     * Filter golongan ditangani di sini: kolom gol_pangkat_terakhir berisi pangkat + golongan
+     * (mis. "Pembina IV/a" atau "Pengatur Muda - II/a"), sedangkan dropdown mengirim kodenya
+     * saja ("IV/a"), jadi pencocokan persis (=) tidak pernah ketemu. Di sini dicocokkan dengan
+     * akhiran " IV/a". Spasi di depannya penting supaya "II/a" tidak ikut cocok ke "III/a".
+     */
+    private function queryPegawai(array $filter): Builder
+    {
+        $golongan = trim((string) ($filter['golongan'] ?? ''));
+
+        return Pegawai::query()
+            ->filter([...$filter, 'golongan' => null]) // filter lain tetap lewat scope bawaan
+            ->when($golongan !== '', fn (Builder $q) => $q->where(fn (Builder $q) => $q
+                ->where('gol_pangkat_terakhir', $golongan)
+                ->orWhere('gol_pangkat_terakhir', 'like', '% '.$golongan)));
     }
 }

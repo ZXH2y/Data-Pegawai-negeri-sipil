@@ -21,10 +21,10 @@ class PegawaiRequest extends FormRequest
         $rules = [
             'nip' => ['required', 'digits:18', Rule::unique('pegawais', 'nip')->ignore($pegawai?->id)],
             'nama' => ['required', 'string', 'max:255'],
-            'gol_pangkat_cpns' => ['required', Rule::in($golongan)],
-            'jabatan' => ['required', 'string', 'max:255'],
-            'gol_pangkat_terakhir' => ['required', Rule::in($golongan)],
-            'tmt_pangkat_terakhir' => ['required', 'date'],
+            'gol_pangkat_cpns' => ['nullable', Rule::in($golongan)],
+            'jabatan' => ['nullable', 'string', 'max:255'],
+            'gol_pangkat_terakhir' => ['nullable', Rule::in($golongan)],
+            'tmt_pangkat_terakhir' => ['nullable', 'date'],
             'tmt_cpns' => ['nullable', 'date', 'before_or_equal:tmt_pangkat_terakhir', 'before_or_equal:today'],
             // Dipakai hanya bila tmt_cpns kosong (masa kerja diisi manual).
             'masa_kerja_tahun' => ['nullable', 'integer', 'min:0', 'max:60'],

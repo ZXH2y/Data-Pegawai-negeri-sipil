@@ -16,8 +16,8 @@
             <p class="font-mono text-sm text-gray-500">NIP {{ $pegawai->nip }}</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('pegawai.export-detail-pdf', $pegawai) }}" target="_blank"
-               class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">PDF</a>
+            <a href="{{ route('pegawai.export-detail-excel', $pegawai) }}"
+                class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">Excel</a>
             <a href="{{ route('pegawai.edit', $pegawai) }}"
                class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600">Edit</a>
         </div>

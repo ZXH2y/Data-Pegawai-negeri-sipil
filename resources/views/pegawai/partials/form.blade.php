@@ -25,7 +25,7 @@
     {{-- Gol CPNS --}}
     <div>
         <label for="gol_pangkat_cpns" class="{{ $label }}">Gol/Pangkat CPNS <span class="text-red-500">*</span></label>
-        <select id="gol_pangkat_cpns" name="gol_pangkat_cpns" class="{{ $input }}" required>
+        <select id="gol_pangkat_cpns" name="gol_pangkat_cpns" class="{{ $input }}">
             <option value="">— pilih —</option>
             @foreach (\App\Models\Pegawai::GOLONGAN as $kode => $nama)
                 <option value="{{ $kode }}" @selected(old('gol_pangkat_cpns', $pegawai->gol_pangkat_cpns) === $kode)>
@@ -46,7 +46,7 @@
     {{-- Gol terakhir --}}
     <div>
         <label for="gol_pangkat_terakhir" class="{{ $label }}">Gol/Pangkat terakhir <span class="text-red-500">*</span></label>
-        <select id="gol_pangkat_terakhir" name="gol_pangkat_terakhir" class="{{ $input }}" required>
+        <select id="gol_pangkat_terakhir" name="gol_pangkat_terakhir" class="{{ $input }}">
             <option value="">— pilih —</option>
             @foreach (\App\Models\Pegawai::GOLONGAN as $kode => $nama)
                 <option value="{{ $kode }}" @selected(old('gol_pangkat_terakhir', $pegawai->gol_pangkat_terakhir) === $kode)>
@@ -61,7 +61,7 @@
     <div>
         <label for="tmt_pangkat_terakhir" class="{{ $label }}">TMT pangkat terakhir <span class="text-red-500">*</span></label>
         <input type="date" id="tmt_pangkat_terakhir" name="tmt_pangkat_terakhir"
-               value="{{ old('tmt_pangkat_terakhir', $tgl($pegawai->tmt_pangkat_terakhir)) }}" class="{{ $input }}" required>
+               value="{{ old('tmt_pangkat_terakhir', $tgl($pegawai->tmt_pangkat_terakhir)) }}" class="{{ $input }}">
         @error('tmt_pangkat_terakhir') <p class="{{ $err }}">{{ $message }}</p> @enderror
     </div>
 
