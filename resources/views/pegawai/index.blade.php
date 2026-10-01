@@ -112,10 +112,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 
-<div class="mx-auto max-w-7xl px-4 py-8 text-slate-900 antialiased sm:px-6 lg:px-8"
+<div class="content_web mx-auto max-w-7xl px-4 py-8 text-slate-900 antialiased sm:px-6 lg:px-8"
      style="font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;">
+     <video autoplay muted loop playsinline class="fixed inset-0 -z-10 h-full w-full object-cover">
+    <source src="{{ asset('assets/video/sawah.mp4') }}" type="video/mp4">
+</video>
 
-    {{-- ================= Header ================= --}}
     <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
             <h1 class="text-2xl font-bold tracking-tight text-slate-900">Data Pegawai</h1>
@@ -135,7 +137,6 @@
         @include('pegawai.partials.flash')
     </div>
 
-    {{-- ================= Pencarian & filter ================= --}}
     <form id="form-filter" method="GET" action="{{ route('pegawai.index') }}"
           class="mt-3 flex flex-col gap-2 md:flex-row md:items-center">
         @if ($kgbAktif !== '')
@@ -190,8 +191,7 @@
         @endif
     </form>
 
-    {{-- ================= Daftar ================= --}}
-    <div class="mt-5 overflow-hidden rounded-xl bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
+    <div class="mt-5 overflow-hidden rounded-xl bg-white/5 backdrop-blur-md shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
 
         {{-- Kepala kartu: tab status KGB + jumlah hasil --}}
         <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 sm:px-5">
