@@ -112,7 +112,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 
-<div class="content_web mx-auto max-w-7xl px-4 py-8 text-slate-900 antialiased sm:px-6 lg:px-8"
+<div class="content_web mx-auto max-w-screen-2xl px-4 py-8 text-slate-900 antialiased sm:px-6 lg:px-8"
      style="font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;">
      <video autoplay muted loop playsinline class="fixed inset-0 -z-10 h-full w-full object-cover">
     <source src="{{ asset('assets/video/sawah.mp4') }}" type="video/mp4">
@@ -191,7 +191,7 @@
         @endif
     </form>
 
-    <div class="mt-5 overflow-hidden rounded-xl bg-white/5 backdrop-blur-md shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
+    <div class="mt-5 w-full overflow-hidden rounded-xl bg-white/5 backdrop-blur-md shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
 
         {{-- Kepala kartu: tab status KGB + jumlah hasil --}}
         <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 sm:px-5">
@@ -236,9 +236,12 @@
                 <table class="min-w-full text-sm">
                     <thead class="whitespace-nowrap border-b border-slate-200 bg-slate-50/80 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                         <tr>
-                            <th scope="col" class="py-3 pl-5 pr-3 font-semibold">Pegawai</th>
+                            <th scope="col" class="py-3 pl-5 pr-3 font-semibold">No</th>
+                            <th scope="col" class="py-3 pl-5 pr-3 font-semibold">Nip</th>
+                            <th scope="col" class="py-3 pl-5 pr-3 font-semibold">Nama</th>
+                            <th scope="col" class="px-3 py-3 font-semibold">GOL/PANGKAT CPNS</th>
                             <th scope="col" class="px-3 py-3 font-semibold">Jabatan</th>
-                            <th scope="col" class="px-3 py-3 font-semibold">Pangkat / golongan</th>
+                            <th scope="col" class="px-3 py-3 font-semibold">GOL/PANGKAT(TERAKHIR)</th>
                             <th scope="col" class="px-3 py-3 font-semibold">Masa kerja</th>
                             <th scope="col" class="px-3 py-3 font-semibold">KGB terakhir</th>
                             <th scope="col" class="px-3 py-3 font-semibold">KGB berikutnya</th>
@@ -255,17 +258,18 @@
                                 $gol = $pecahGol($pegawai->gol_pangkat_terakhir);
                             @endphp
                             <tr data-href="{{ route('pegawai.show', $pegawai) }}" class="group cursor-pointer transition-colors hover:bg-emerald-50/40">
-                                <td class="py-3.5 pl-5 pr-3 {{ $status['garis'] ?? '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <span class="flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-bold {{ $av['warna'] }}" aria-hidden="true">{{ $av['inisial'] }}</span>
-                                        <div class="min-w-0">
+                                <td class="py-3.5 pl-5 pr-3 tabular-nums text-slate-900 {{ $status['garis'] ?? '' }}">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-3 py-3.5 tabular-nums text-slate-900 ">
+                                        {!! $nip($pegawai->nip) !!}
+                                    </td>
+                                    <td class="px-3 py-3.5">
+                                        <div class="flex items-center gap-3">
                                             <a href="{{ route('pegawai.show', $pegawai) }}" class="font-semibold text-slate-900 hover:underline group-hover:text-emerald-800 focus-visible:underline focus-visible:outline-none">{{ $pegawai->nama }}</a>
-                                            <div class="mt-0.5 text-xs tabular-nums text-slate-500">{!! $nip($pegawai->nip) !!}</div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="max-w-xs px-3 py-3.5 text-slate-600">{{ $pegawai->jabatan }}</td>
-                                <td class="whitespace-nowrap px-3 py-3.5">
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-3.5">
                                     <div class="flex items-center gap-2">
                                         @if ($gol['kode'])
                                             <span class="rounded-md px-1.5 py-0.5 text-xs font-bold tabular-nums ring-1 ring-inset {{ $gol['warna'] }}">{{ $gol['kode'] }}</span>
@@ -274,6 +278,8 @@
                                     </div>
                                     <div class="mt-1 text-xs tabular-nums text-slate-500">TMT {{ $tgl($pegawai->tmt_pangkat_terakhir) }}</div>
                                 </td>
+                                <td class="max-w-xs px-3 py-3.5 text-slate-600">{{ $pegawai->jabatan }}</td>
+                                <td class="whitespace-nowrap px-3 py-3.5">{{ $pegawai->gol_pangkat_terakhir }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $pegawai->masa_kerja_label }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $tgl($pegawai->kgb) }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5">
