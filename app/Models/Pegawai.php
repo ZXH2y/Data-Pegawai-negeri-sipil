@@ -144,20 +144,21 @@ class Pegawai extends Model
             return [
                 'tahun' => (int) $this->masa_kerja_tahun,
                 'bulan' => (int) $this->masa_kerja_bulan,
+                'hari' =>  (int) $this->masa_kerja_hari,
             ];
         }
 
         $per = Carbon::instance($per ?? now())->startOfDay();
 
         if ($this->tmt_cpns->greaterThan($per)) {
-            return ['tahun' => 0, 'bulan' => 0];
+            return ['tahun' => 0, 'bulan' => 0, 'hari' => 0];
         }
 
         // diff() -> DateInterval: aman di Carbon 2 maupun 3
         // (di Carbon 3, diffInYears() mengembalikan float).
         $selisih = $this->tmt_cpns->diff($per);
 
-        return ['tahun' => $selisih->y, 'bulan' => $selisih->m];
+        return ['tahun' => $selisih->y, 'bulan' => $selisih->m, 'hari' => $selisih->d];
     }
 
     /** $pegawai->masa_kerja  => ['tahun' => 12, 'bulan' => 3] (live, per hari ini) */
@@ -172,7 +173,7 @@ class Pegawai extends Model
         return Attribute::get(function () {
             $mk = $this->hitungMasaKerja();
 
-            return "{$mk['tahun']} tahun {$mk['bulan']} bulan";
+            return "{$mk['tahun']} tahun {$mk['bulan']} bulan {$mk['hari']} hari";
         });
     }
 

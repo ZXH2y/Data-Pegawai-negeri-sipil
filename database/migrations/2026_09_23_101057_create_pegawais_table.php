@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('kgb_berikutnya')->nullable();    
             $table->integer('masa_kerja_tahun')->default(0);
             $table->integer('masa_kerja_bulan')->default(0);
+            $table->integer('masa_kerja_hari')->default(0);
             $table->enum('kgb_mode', ['auto', 'manual'])->default('auto'); 
             $table->timestamps();
         });
