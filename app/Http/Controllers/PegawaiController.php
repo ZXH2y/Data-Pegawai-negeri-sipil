@@ -21,7 +21,7 @@ class PegawaiController extends Controller
         $filter = $request->only(self::FILTER_KEYS);
 
         $pegawais = $this->queryPegawai($filter)
-            ->orderBy('nama')
+            ->orderBy('id')
             ->paginate(15)
             ->withQueryString();
 
@@ -88,7 +88,7 @@ class PegawaiController extends Controller
     {
         $filter = $request->only(self::FILTER_KEYS);
 
-        $pegawais = $this->queryPegawai($filter)->orderBy('nama')->get();
+        $pegawais = $this->queryPegawai($filter)->orderBy('id')->get();
 
         $namaFile = 'data-pegawai-'.now()->format('Ymd-His').'.xlsx';
 
