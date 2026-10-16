@@ -8,7 +8,10 @@
     $label = 'block text-sm font-medium text-gray-700';
     $tgl   = fn ($d) => $d?->translatedFormat('d F Y') ?? '-';
 @endphp
-<div class="mx-auto max-w-6xl px-4 py-6">
+<div class="mx-auto max-w-6xl px-4 py-6" style="font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;">
+     <video autoplay muted loop playsinline class="fixed inset-0 -z-10 h-full w-full object-cover">
+    <source src="{{ asset('assets/video/sawah.mp4') }}" type="video/mp4">
+</video>
     <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
             <a href="{{ route('pegawai.index') }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke daftar</a>
