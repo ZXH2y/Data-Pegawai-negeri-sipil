@@ -191,7 +191,7 @@
         @endif
     </form>
 
-    <div class="mt-5 w-full overflow-hidden rounded-xl bg-white/5 backdrop-blur-md shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
+    <div class="mt-5 w-full overflow-hidden rounded-xl bg-white/70 backdrop-blur-md shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.12)] ring-1 ring-slate-200">
 
         {{-- Kepala kartu: tab status KGB + jumlah hasil --}}
         <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 sm:px-5">

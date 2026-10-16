@@ -3,7 +3,10 @@
 @section('title', 'Edit Pegawai')
 
 @section('content')
-<div class="mx-auto max-w-4xl px-4 py-6">
+<div class="mx-auto max-w-4xl px-4 py-6" style="font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;">
+     <video autoplay muted loop playsinline class="fixed inset-0 -z-10 h-full w-full object-cover">
+    <source src="{{ asset('assets/video/sawah.mp4') }}" type="video/mp4">
+</video>
     <div class="mb-6">
         <a href="{{ route('pegawai.show', $pegawai) }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke detail</a>
         <h1 class="mt-2 text-2xl font-semibold text-gray-800">Edit Pegawai</h1>
@@ -12,7 +15,7 @@
 
     @include('pegawai.partials.flash')
 
-    <form method="POST" action="{{ route('pegawai.update', $pegawai) }}" class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+    <form method="POST" action="{{ route('pegawai.update', $pegawai) }}" class="rounded-xl bg-white/70 p-6 shadow-sm ring-1 ring-gray-200">
         @csrf
         @method('PUT')
         @include('pegawai.partials.form')
