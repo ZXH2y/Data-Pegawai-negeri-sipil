@@ -234,7 +234,7 @@
             {{-- Tabel (tablet & desktop) --}}
             <div class="hidden overflow-x-auto md:block">
                 <table class="min-w-full text-sm">
-                    <thead class="whitespace-nowrap border-b border-slate-200 bg-slate-50/80 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                    <thead class="whitespace-nowrap border-b border-slate-200 bg-slate-50/80 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-center">
                         <tr>
                             <th scope="col" class="py-3 pl-5 pr-3 font-semibold">No</th>
                             <th scope="col" class="py-3 pl-5 pr-3 font-semibold">Nip</th>
@@ -242,8 +242,9 @@
                             <th scope="col" class="px-3 py-3 font-semibold">GOL/PANGKAT CPNS</th>
                             <th scope="col" class="px-3 py-3 font-semibold">Jabatan</th>
                             <th scope="col" class="px-3 py-3 font-semibold">GOL/PANGKAT(TERAKHIR)</th>
+                            <th scope="col" class="px-3 py-3 font-semibold">TMT GOL PANGKAT(TERAKHIR)</th>
                             <th scope="col" class="px-3 py-3 font-semibold">Masa kerja</th>
-                            <th scope="col" class="px-3 py-3 font-semibold">KGB terakhir</th>
+                            <th scope="col" class="px-3 py-3 font-semibold">KGB</th>
                             <th scope="col" class="px-3 py-3 font-semibold">KGB berikutnya</th>
                             <th scope="col" class="px-3 py-3 font-semibold">Mode</th>
                             <th scope="col" class="py-3 pl-3 pr-4"><span class="sr-only">Aksi</span></th>
@@ -256,8 +257,9 @@
                                 $sisa = $status ? $teksSisa($sisaHari($pegawai->kgb_berikutnya)) : null;
                                 $av = $avatar($pegawai->nama);
                                 $gol = $pecahGol($pegawai->gol_pangkat_terakhir);
+                                $golCpns = $pecahGol($pegawai->gol_pangkat_cpns);
                             @endphp
-                            <tr data-href="{{ route('pegawai.show', $pegawai) }}" class="group cursor-pointer transition-colors hover:bg-emerald-50/40">
+                            <tr data-href="{{ route('pegawai.show', $pegawai) }}" class="group cursor-pointer transition-colors hover:bg-emerald-50/40 text-center">
                                 <td class="py-3.5 pl-5 pr-3 tabular-nums text-slate-900 {{ $status['garis'] ?? '' }}">
                                         {{ $loop->iteration }}
                                     </td>
@@ -271,15 +273,16 @@
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-3.5">
                                     <div class="flex items-center gap-2">
-                                        @if ($gol['kode'])
-                                            <span class="rounded-md px-1.5 py-0.5 text-xs font-bold tabular-nums ring-1 ring-inset {{ $gol['warna'] }}">{{ $gol['kode'] }}</span>
+                                        @if ($golCpns['kode'])
+                                            <span class="rounded-md px-1.5 py-0.5 text-xs font-bold tabular-nums ring-1 ring-inset {{ $golCpns['warna'] }}">{{ $golCpns['kode'] }}</span>
                                         @endif
-                                        <span class="font-medium text-slate-800">{{ $gol['pangkat'] }}</span>
+                                        <span class="font-medium text-slate-800">{{ $golCpns['pangkat'] ?: '–' }}</span>
                                     </div>
-                                    <div class="mt-1 text-xs tabular-nums text-slate-500">TMT {{ $tgl($pegawai->tmt_pangkat_terakhir) }}</div>
+                                    <div class="mt-1 text-xs tabular-nums text-slate-500">TMT {{ $tgl($pegawai->tmt_cpns) }}</div>
                                 </td>
                                 <td class="max-w-xs px-3 py-3.5 text-slate-600">{{ $pegawai->jabatan }}</td>
-                                <td class="whitespace-nowrap px-3 py-3.5">{{ $pegawai->gol_pangkat_terakhir }}</td>
+                                <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $pegawai->gol_pangkat_terakhir }}</td>
+                                <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $pegawai->tmt_pangkat_terakhir?->translatedFormat('j F Y') ?? '–' }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $pegawai->masa_kerja_label }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5 tabular-nums text-slate-600">{{ $tgl($pegawai->kgb) }}</td>
                                 <td class="whitespace-nowrap px-3 py-3.5">
