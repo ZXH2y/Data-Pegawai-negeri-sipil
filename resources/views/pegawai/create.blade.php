@@ -8,7 +8,9 @@
     <source src="{{ asset('assets/video/sawah.mp4') }}" type="video/mp4">
 </video>
     <div class="mb-6">
-        <a href="{{ route('pegawai.index') }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke daftar</a>
+        <div class="mb-6">
+            <a href="{{ route('pegawai.index') }}" class="h-5 w-5 p-2 md:h-10 md:w-10 md:p-4 rounded-2xl bg-white text-sm text-gray-500 hover:bg-gray-200 transition-all duration-300">&larr; Kembali ke daftar</a>
+        </div>
         <h1 class="mt-2 text-2xl font-semibold text-gray-800">Tambah Pegawai</h1>
     </div>
 

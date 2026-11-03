@@ -15,6 +15,3 @@ Route::resource('pegawai', PegawaiController::class);
 Route::get('pegawai/{pegawai}/excel', [PegawaiController::class, 'exportDetailExcel'])->name('pegawai.export-detail-excel');
 Route::post('pegawai/{pegawai}/kgb', [PegawaiKgbController::class, 'store'])->name('pegawai.kgb.store');
 Route::patch('pegawai/{pegawai}/kgb/otomatis', [PegawaiKgbController::class, 'aktifkanOtomatis'])->name('pegawai.kgb.otomatis');
-
-// Bila nanti ada login, bungkus semua route di atas dengan:
-// Route::middleware('auth')->group(function () { ... });
